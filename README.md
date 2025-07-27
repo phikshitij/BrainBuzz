@@ -25,7 +25,7 @@ It features interactive quizzes, descriptive questions, peer review, resource sh
 ## 📸 Screenshots
 
 | Dashboard (Teacher) | Dashboard (Student) | Resource Sharing | Grading Interface |
-|---------------------|---------------------|------------|------------------|------------------|
+|---------------------|---------------------|------------------|------------------|
 | ![Teacher Dashboard](screenshots/teacher_dashboard.png) | ![Student Dashboard](screenshots/student_dashboard.png) | ![Resources](screenshots/resources.png) | ![Grading](screenshots/grading.png) |
 
 

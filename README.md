@@ -26,7 +26,7 @@ It features interactive quizzes, descriptive questions, peer review, resource sh
 
 | Dashboard (Teacher) | Dashboard (Student) | AI Chatbot | Resource Sharing | Grading Interface |
 |---------------------|---------------------|------------|------------------|------------------|
-| ![Teacher Dashboard](screenshots/teacher_dashboard.png) | ![Student Dashboard](screenshots/student_dashboard.png) | ![AI Chatbot](screenshots/chatbot.png) | ![Resources](screenshots/resources.png) | ![Grading](screenshots/grading.png) |
+| ![Teacher Dashboard](screenshots/teacher_dashboard.png) | ![Student Dashboard](screenshots/student_dashboard.png) | ![Resources](screenshots/resources.png) | ![Grading](screenshots/grading.png) |
 
 
 ---

@@ -1,0 +1,745 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Dashboard - Brainbuzz🧠</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            --secondary-gradient: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            --success-gradient: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+            --info-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            --dark-bg: #1a1d23;
+            --card-bg: #2a2d35;
+            --text-light: #8892b0;
+            --text-white: #e6f1ff;
+            --border-color: #383c45;
+        }
+
+        body {
+            background: var(--dark-bg);
+            color: var(--text-white);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            min-height: 100vh;
+        }
+
+        .navbar {
+            background: var(--primary-gradient) !important;
+            border: none;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+            backdrop-filter: blur(10px);
+        }
+
+        .navbar-brand {
+            font-weight: 700;
+            font-size: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .navbar-brand::before {
+            content: "🎓";
+            font-size: 1.8rem;
+        }
+
+        .btn-outline-light {
+            border: 2px solid rgba(255,255,255,0.3);
+            color: white;
+            font-weight: 500;
+            padding: 0.5rem 1.5rem;
+            border-radius: 25px;
+            transition: all 0.3s ease;
+        }
+
+        .btn-outline-light:hover {
+            background: rgba(255,255,255,0.2);
+            border-color: white;
+            transform: translateY(-2px);
+        }
+
+        .dashboard-container {
+            display: grid;
+            grid-template-columns: 300px 1fr;
+            gap: 2rem;
+            padding: 2rem;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .welcome-section {
+            background: var(--card-bg);
+            border-radius: 20px;
+            padding: 2rem;
+            height: fit-content;
+            border: 1px solid var(--border-color);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
+
+        .welcome-avatar {
+            width: 80px;
+            height: 80px;
+            background: var(--secondary-gradient);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            color: white;
+            margin-bottom: 1rem;
+            box-shadow: 0 8px 25px rgba(79, 172, 254, 0.3);
+        }
+
+        .welcome-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            background: var(--secondary-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .welcome-subtitle {
+            color: var(--text-light);
+            margin-bottom: 1.5rem;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+
+        .stat-item {
+            text-align: center;
+            padding: 1rem;
+            background: rgba(255,255,255,0.05);
+            border-radius: 12px;
+            border: 1px solid var(--border-color);
+        }
+
+        .stat-number {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--text-white);
+        }
+
+        .stat-label {
+            font-size: 0.8rem;
+            color: var(--text-light);
+            margin-top: 0.25rem;
+        }
+
+        .main-content {
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+        }
+
+        .content-card {
+            background: var(--card-bg);
+            border-radius: 20px;
+            padding: 2rem;
+            border: 1px solid var(--border-color);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+
+        .card-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 2px solid var(--border-color);
+        }
+
+        .card-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            color: white;
+        }
+
+        .quiz-icon {
+            background: var(--success-gradient);
+        }
+
+        .desc-icon {
+            background: var(--info-gradient);
+        }
+
+        .grades-icon {
+            background: var(--secondary-gradient);
+        }
+
+        .resources-icon {
+            background: var(--primary-gradient);
+        }
+
+        .card-title {
+            font-size: 1.3rem;
+            font-weight: 700;
+            margin: 0;
+        }
+
+        .question-card {
+            background: rgba(255,255,255,0.05);
+            border: 1px solid var(--border-color);
+            border-radius: 15px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .question-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.3);
+            border-color: rgba(79, 172, 254, 0.5);
+        }
+
+        .question-text {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            color: var(--text-white);
+        }
+
+        .form-check {
+            margin-bottom: 0.75rem;
+            padding-left: 2rem;
+        }
+
+        .form-check-input {
+            background-color: rgba(255,255,255,0.1);
+            border: 2px solid var(--border-color);
+            border-radius: 50%;
+            width: 1.2rem;
+            height: 1.2rem;
+        }
+
+        .form-check-input:checked {
+            background: var(--secondary-gradient);
+            border-color: transparent;
+        }
+
+        .form-check-label {
+            color: var(--text-light);
+            margin-left: 0.5rem;
+            font-weight: 500;
+        }
+
+        .form-control {
+            background-color: rgba(255,255,255,0.05);
+            border: 2px solid var(--border-color);
+            border-radius: 12px;
+            color: var(--text-white);
+            padding: 1rem;
+            font-size: 0.95rem;
+        }
+
+        .form-control:focus {
+            background-color: rgba(255,255,255,0.08);
+            border-color: #4facfe;
+            box-shadow: 0 0 0 0.2rem rgba(79, 172, 254, 0.25);
+            color: var(--text-white);
+        }
+
+        .form-control::placeholder {
+            color: var(--text-light);
+        }
+
+        .btn-success {
+            background: var(--success-gradient);
+            border: none;
+            border-radius: 25px;
+            padding: 0.6rem 1.5rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .btn-success:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(17, 153, 142, 0.4);
+        }
+
+        .btn-info {
+            background: var(--info-gradient);
+            border: none;
+            border-radius: 25px;
+            padding: 0.6rem 1.5rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .btn-info:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
+        }
+
+        .list-group-item {
+            background: rgba(255,255,255,0.05);
+            border: 1px solid var(--border-color);
+            border-radius: 12px !important;
+            margin-bottom: 1rem;
+            padding: 1.5rem;
+            color: var(--text-white);
+        }
+
+        .list-group-item:last-child {
+            margin-bottom: 0;
+        }
+
+        .grade-badge {
+            display: inline-block;
+            padding: 0.4rem 1rem;
+            border-radius: 20px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            margin-top: 0.5rem;
+        }
+
+        .grade-pending {
+            background: rgba(255, 193, 7, 0.2);
+            color: #ffc107;
+            border: 1px solid rgba(255, 193, 7, 0.3);
+        }
+
+        .grade-scored {
+            background: rgba(40, 167, 69, 0.2);
+            color: #28a745;
+            border: 1px solid rgba(40, 167, 69, 0.3);
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 3rem 2rem;
+            color: var(--text-light);
+        }
+
+        .empty-state i {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            opacity: 0.5;
+        }
+
+        .resource-link {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1rem;
+            background: rgba(255,255,255,0.05);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            text-decoration: none;
+            color: var(--text-white);
+            margin-bottom: 0.75rem;
+            transition: all 0.3s ease;
+        }
+
+        .resource-link:hover {
+            background: rgba(255,255,255,0.1);
+            transform: translateX(10px);
+            color: #4facfe;
+        }
+
+        .resource-icon {
+            width: 40px;
+            height: 40px;
+            background: var(--primary-gradient);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+        }
+
+        @media (max-width: 768px) {
+            .dashboard-container {
+                grid-template-columns: 1fr;
+                padding: 1rem;
+            }
+            
+            .welcome-section {
+                order: -1;
+            }
+            
+            .stats-grid {
+                grid-template-columns: 1fr 1fr 1fr 1fr;
+            }
+        }
+
+        .dashboard-actions {
+            margin: 1.5rem 0;
+        }
+
+        .action-btn {
+            width: 100%;
+            padding: 0.8rem;
+            background: var(--secondary-gradient);
+            border: none;
+            border-radius: 12px;
+            color: white;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            transition: all 0.3s ease;
+            text-decoration: none;
+        }
+
+        .action-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(79, 172, 254, 0.3);
+            color: white;
+        }
+
+        .alert {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1000;
+            min-width: 300px;
+            max-width: 500px;
+            padding: 1rem;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            animation: slideIn 0.3s ease;
+        }
+
+        @keyframes slideIn {
+            from {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        /* Notice Board Styling */
+        .notice-board {
+            margin-top: 2rem;
+        }
+
+        .notice-board .card {
+            background: rgba(255,255,255,0.05) !important;
+            border: 1px solid var(--border-color) !important;
+            border-radius: 15px !important;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.2);
+        }
+
+        .notice-board .card-header {
+            background: var(--info-gradient) !important;
+            border: none !important;
+            border-radius: 15px 15px 0 0 !important;
+            padding: 1rem 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-weight: 600;
+        }
+
+        .notice-board .card-body {
+            padding: 1.5rem;
+        }
+
+        .notice-item {
+            background: rgba(255,255,255,0.08) !important;
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 1.25rem;
+            margin-bottom: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .notice-item:last-child {
+            margin-bottom: 0;
+        }
+
+        .notice-item:hover {
+            background: rgba(255,255,255,0.12) !important;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        }
+
+        .notice-title {
+            font-weight: 700;
+            font-size: 1rem;
+            color: var(--text-white);
+            margin-bottom: 0.5rem;
+        }
+
+        .notice-content {
+            color: var(--text-light);
+            font-size: 0.9rem;
+            line-height: 1.4;
+            margin-bottom: 0.75rem;
+        }
+
+        .notice-date {
+            text-align: right;
+            font-size: 0.8rem;
+            color: #4facfe;
+            font-weight: 500;
+        }
+    </style>
+</head>
+<body>
+<nav class="navbar navbar-expand-lg navbar-dark">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="/">Brainbuzz🧠 Learning</a>
+        <span class="navbar-text ms-auto">Dashboard</span>
+        <a class="btn btn-outline-light ms-3" href="/logout"><i class="fas fa-sign-out-alt me-2"></i>Logout</a>
+    </div>
+</nav>
+
+<div class="dashboard-container">
+    {# Alerts for success/error messages #}
+    {% if request.query_params.success %}
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            <i class="fas fa-check-circle me-2"></i>
+            {{ request.query_params.success|capitalize }}!
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    {% endif %}
+    {% if request.query_params.error %}
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            <i class="fas fa-exclamation-triangle me-2"></i>
+            {{ request.query_params.error|capitalize }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    {% endif %}
+
+    <!-- Welcome Section -->
+    <div class="welcome-section">
+        <div class="welcome-avatar">
+            <i class="fas fa-user"></i>
+        </div>
+        <h1 class="welcome-title">Welcome, {{ name }}!</h1>
+        <p class="welcome-subtitle">Student Dashboard</p>
+        
+        <div class="dashboard-actions">
+            <a href="/student/peer-review" class="btn btn-primary action-btn">
+                <i class="fas fa-users"></i>
+                Peer Review
+            </a>
+        </div>
+        
+        <div class="stats-grid">
+            <div class="stat-item">
+                <div class="stat-number">0</div>
+                <div class="stat-label">Active Questions</div>
+            </div>
+            <div class="stat-item">
+    <div class="stat-number">{{ answers|length }}</div>
+    <div class="stat-label">Submitted Answers</div>
+</div>
+        </div>
+
+        <!-- Notice Board Section - Properly aligned -->
+        <div class="notice-board">
+            <div class="card">
+                <div class="card-header">
+                    <i class="fas fa-bullhorn"></i>
+                    Notice Board
+                </div>
+                <div class="card-body">
+    {% if notices and notices|length > 0 %}
+        {% for notice in notices %}
+            <div class="notice-item">
+                <div class="notice-title">{{ notice.title }}</div>
+                <div class="notice-content">{{ notice.content }}</div>
+                <div class="notice-date">
+                    Posted: {{ notice.created_at.strftime('%Y-%m-%d %H:%M') if notice.created_at else '' }}
+                </div>
+            </div>
+        {% endfor %}
+    {% else %}
+        <div class="empty-state">
+            <i class="fas fa-sticky-note"></i>
+            <h4>No notices posted yet</h4>
+            <p>Your teacher will post important updates here.</p>
+        </div>
+    {% endif %}
+</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <!-- Quiz Questions Section -->
+        <div class="content-card">
+            <div class="card-header">
+                <div class="card-icon quiz-icon">
+                    <i class="fas fa-question-circle"></i>
+                </div>
+                <h5 class="card-title">Quiz Questions</h5>
+            </div>
+            <div id="questions-list">
+    {% set quiz_questions = questions | selectattr('type', 'equalto', 'mcq') | list %}
+    {% if quiz_questions %}
+        {% for q in quiz_questions %}
+    <div class="question-card">
+        <div class="question-text">{{ q.text }}</div>
+        <form method="post" action="/student/submit-answer">
+            <input type="hidden" name="question_id" value="{{ q.id }}">
+            <div class="form-check">
+                <input class="form-check-input" type="radio" name="selected_option" id="option1-{{ q.id }}" value="1" required>
+                <label class="form-check-label" for="option1-{{ q.id }}">
+                    {{ q.option1 }}
+                </label>
+            </div>
+            <div class="form-check">
+                <input class="form-check-input" type="radio" name="selected_option" id="option2-{{ q.id }}" value="2">
+                <label class="form-check-label" for="option2-{{ q.id }}">
+                    {{ q.option2 }}
+                </label>
+            </div>
+            <div class="form-check">
+                <input class="form-check-input" type="radio" name="selected_option" id="option3-{{ q.id }}" value="3">
+                <label class="form-check-label" for="option3-{{ q.id }}">
+                    {{ q.option3 }}
+                </label>
+            </div>
+            <div class="form-check">
+                <input class="form-check-input" type="radio" name="selected_option" id="option4-{{ q.id }}" value="4">
+                <label class="form-check-label" for="option4-{{ q.id }}">
+                    {{ q.option4 }}
+                </label>
+            </div>
+            <button type="submit" class="btn btn-success mt-2">Submit Answer</button>
+        </form>
+    </div>
+{% endfor %}
+    {% else %}
+        <div class="empty-state">
+            <i class="fas fa-check-circle"></i>
+            <p>Great job! You've completed all quiz questions.</p>
+        </div>
+    {% endif %}
+</div>
+        </div>
+
+        <!-- Descriptive Questions Section -->
+        <div class="content-card">
+            <div class="card-header">
+                <div class="card-icon desc-icon">
+                    <i class="fas fa-edit"></i>
+                </div>
+                <h5 class="card-title">Descriptive Questions</h5>
+            </div>
+            <div id="desc-questions-list">
+    {% set desc_questions = questions | selectattr('type', 'equalto', 'descriptive') | list %}
+    {% if desc_questions %}
+        {% for q in desc_questions %}
+            <div class="question-card">
+    <div class="question-text">{{ q.text }}</div>
+    <form method="post" action="/student/submit-descriptive-answer">
+        <input type="hidden" name="question_id" value="{{ q.id }}">
+        <textarea name="description" class="form-control" rows="2" required></textarea>
+        <button type="submit" class="btn btn-success mt-2">Submit Answer</button>
+    </form>
+</div>
+        {% endfor %}
+    {% else %}
+        <div class="empty-state">
+            <i class="fas fa-pen-fancy"></i>
+            <p>No descriptive questions available yet.</p>
+        </div>
+    {% endif %}
+</div>
+        </div>
+
+        <!-- Grades Section -->
+        <div class="content-card">
+    <div class="card-header">
+        <div class="card-icon grades-icon">
+            <i class="fas fa-chart-line"></i>
+        </div>
+        <h5 class="card-title">Submitted Answers & Grades</h5>
+    </div>
+    <div id="grades-list">
+        {% if answers %}
+            <ul class="list-group">
+                {% for a in answers %}
+                    <li class="list-group-item bg-dark text-white mb-2">
+                        <div><strong>Q:</strong> {{ a.question.text }}</div>
+                        <div><strong>Your Answer:</strong>
+                            {% if a.selected_option %}
+                                Option {{ a.selected_option }}
+                            {% elif a.description %}
+                                {{ a.description }}
+                            {% endif %}
+                        </div>
+                        <div>
+                            <strong>Grade:</strong>
+                            {% if a.grade is not none %}
+                                <span class="badge bg-success">{{ a.grade }}</span>
+                            {% else %}
+                                <span class="badge bg-warning text-dark">Pending</span>
+                            {% endif %}
+                        </div>
+                    </li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <div class="empty-state">
+                <i class="fas fa-chart-bar"></i>
+                <p>Your grades will appear here once you start answering questions.</p>
+            </div>
+        {% endif %}
+    </div>
+</div>
+
+        <!-- Resources Section -->
+        <div class="content-card">
+            <div class="card-header">
+                <div class="card-icon resources-icon">
+                    <i class="fas fa-folder-open"></i>
+                </div>
+                <h5 class="card-title">Learning Resources</h5>
+            </div>
+            <div id="resources-list">
+    {% if resources and resources|length > 0 %}
+        {% for r in resources %}
+            <a href="{{ r.url if r.url else '#' }}" class="resource-link d-flex align-items-center justify-content-between" target="_blank">
+    <div class="d-flex align-items-center">
+        <div class="resource-icon me-3"><i class="fas fa-file-alt"></i></div>
+        <div>
+            <div class="fw-bold fs-5 mb-1">{{ r.name if r.name else (r.file_name if r.file_name else 'Resource') }}</div>
+            {% if r.description %}
+                <div class="small text-light">{{ r.description }}</div>
+            {% endif %}
+        </div>
+    </div>
+    <div>
+        <span class="badge bg-primary p-2"><i class="fas fa-arrow-down"></i> Download</span>
+    </div>
+</a>
+        {% endfor %}
+    {% else %}
+        <div class="empty-state">
+            <i class="fas fa-book-open"></i>
+            <p>No learning resources available yet. Your teacher will upload them soon!</p>
+        </div>
+    {% endif %}
+</div>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

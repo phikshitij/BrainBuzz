@@ -1,0 +1,569 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Notice Management - Brainbuzz Learning</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+            color: #ffffff;
+            min-height: 100vh;
+        }
+
+        .header {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+
+        .logo i {
+            color: #00bcd4;
+        }
+
+        .nav-buttons {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .nav-btn {
+            background: rgba(255, 255, 255, 0.1);
+            border: none;
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .nav-btn:hover {
+            background: rgba(0, 188, 212, 0.2);
+            transform: translateY(-2px);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 2rem;
+        }
+
+        .page-title {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .page-title h1 {
+            font-size: 2.5rem;
+            color: #00bcd4;
+            margin-bottom: 0.5rem;
+        }
+
+        .page-title p {
+            color: #b0b0b0;
+            font-size: 1.1rem;
+        }
+
+        .card {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border-radius: 16px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+        }
+
+        .card-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .card-header h3 {
+            color: #00bcd4;
+            font-size: 1.5rem;
+        }
+
+        .card-header i {
+            font-size: 1.5rem;
+            color: #00bcd4;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: #ffffff;
+            font-weight: 500;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 12px 16px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 8px;
+            color: #ffffff;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: #00bcd4;
+            box-shadow: 0 0 0 3px rgba(0, 188, 212, 0.2);
+            background: rgba(255, 255, 255, 0.15);
+        }
+
+        .form-control::placeholder {
+            color: #b0b0b0;
+        }
+
+        textarea.form-control {
+            resize: vertical;
+            min-height: 100px;
+        }
+
+        .recipients-section {
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 12px;
+            padding: 1.5rem;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .select-all-container {
+            margin-bottom: 1rem;
+            padding: 1rem;
+            background: rgba(0, 188, 212, 0.1);
+            border-radius: 8px;
+            border: 1px solid rgba(0, 188, 212, 0.3);
+        }
+
+        .select-all-label {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-weight: 500;
+            color: #00bcd4;
+            cursor: pointer;
+        }
+
+        .students-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1rem;
+            max-height: 300px;
+            overflow-y: auto;
+            padding: 0.5rem;
+        }
+
+        .student-item {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 8px;
+            padding: 1rem;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .student-item:hover {
+            background: rgba(255, 255, 255, 0.1);
+            transform: translateY(-2px);
+        }
+
+        .student-checkbox {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            cursor: pointer;
+        }
+
+        .student-checkbox input[type="checkbox"] {
+            width: 18px;
+            height: 18px;
+            accent-color: #00bcd4;
+        }
+
+        .student-info {
+            flex: 1;
+        }
+
+        .student-name {
+            font-weight: 500;
+            color: #ffffff;
+            margin-bottom: 0.25rem;
+        }
+
+        .student-email {
+            color: #b0b0b0;
+            font-size: 0.9rem;
+        }
+
+        .btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            text-decoration: none;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #00bcd4 0%, #00acc1 100%);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: linear-gradient(135deg, #00acc1 0%, #0097a7 100%);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(0, 188, 212, 0.4);
+        }
+
+        .btn-danger {
+            background: linear-gradient(135deg, #f44336 0%, #e53935 100%);
+            color: white;
+            padding: 8px 12px;
+            font-size: 0.9rem;
+        }
+
+        .btn-danger:hover {
+            background: linear-gradient(135deg, #e53935 0%, #d32f2f 100%);
+            transform: translateY(-2px);
+        }
+
+        .notices-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 1rem;
+        }
+
+        .notices-table th,
+        .notices-table td {
+            padding: 1rem;
+            text-align: left;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .notices-table th {
+            background: rgba(0, 188, 212, 0.1);
+            color: #00bcd4;
+            font-weight: 600;
+        }
+
+        .notices-table tr:hover {
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            background: rgba(0, 188, 212, 0.2);
+            color: #00bcd4;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            margin: 0.25rem;
+            border: 1px solid rgba(0, 188, 212, 0.3);
+        }
+
+        .badge-all {
+            background: rgba(76, 175, 80, 0.2);
+            color: #4caf50;
+            border-color: rgba(76, 175, 80, 0.3);
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 3rem;
+            color: #b0b0b0;
+        }
+
+        .empty-state i {
+            font-size: 4rem;
+            margin-bottom: 1rem;
+            color: #555;
+        }
+
+        .counter {
+            background: rgba(0, 188, 212, 0.2);
+            color: #00bcd4;
+            padding: 0.25rem 0.5rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 500;
+            margin-left: 0.5rem;
+        }
+
+        /* Scrollbar Styling */
+        .students-grid::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .students-grid::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 3px;
+        }
+
+        .students-grid::-webkit-scrollbar-thumb {
+            background: rgba(0, 188, 212, 0.5);
+            border-radius: 3px;
+        }
+
+        .students-grid::-webkit-scrollbar-thumb:hover {
+            background: rgba(0, 188, 212, 0.7);
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 0 1rem;
+            }
+            
+            .students-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .notices-table {
+                font-size: 0.9rem;
+            }
+            
+            .notices-table th,
+            .notices-table td {
+                padding: 0.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <div class="header">
+        <div class="logo">
+            <i class="fas fa-brain"></i>
+            Brainbuzz Learning
+        </div>
+        <div class="nav-buttons">
+            <a href="/teacher/answers" class="nav-btn">
+                <i class="fas fa-chart-line"></i>
+                Grade Answers
+            </a>
+            <a href="/teacher/dashboard" class="nav-btn">
+                <i class="fas fa-users"></i>
+                Dashboard
+            </a>
+        </div>
+    </div>
+
+    <div class="container">
+        <!-- Page Title -->
+        <div class="page-title">
+            <h1><i class="fas fa-bullhorn"></i> Notice Management</h1>
+            <p>Create and manage notices for your students effectively</p>
+        </div>
+
+        <!-- Post Notice Card -->
+        <div class="card">
+            <div class="card-header">
+                <i class="fas fa-plus-circle"></i>
+                <h3>Create New Notice</h3>
+            </div>
+            <form method="post" action="/teacher/post-notice" id="noticeForm">
+                <div class="form-group">
+                    <label class="form-label">
+                        <i class="fas fa-heading"></i> Notice Title
+                    </label>
+                    <input type="text" class="form-control" name="title" placeholder="Enter notice title..." required>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">
+                        <i class="fas fa-edit"></i> Notice Content
+                    </label>
+                    <textarea class="form-control" name="content" rows="4" placeholder="Write your notice content here..." required></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">
+                        <i class="fas fa-users"></i> Select Recipients
+                        <span class="counter" id="selectedCount">0 selected</span>
+                    </label>
+                    <div class="recipients-section">
+                        <div class="select-all-container">
+                            <label class="select-all-label">
+                                <input type="checkbox" id="select-all" onclick="toggleAllStudents(this)">
+                                <i class="fas fa-check-double"></i>
+                                Select All Students
+                            </label>
+                        </div>
+                        
+                        <div class="students-grid" id="studentsGrid">
+                            {% for student in students %}
+                            <div class="student-item">
+                                <label class="student-checkbox">
+                                    <input class="student-checkbox-input" type="checkbox" name="recipients" value="{{ student.id }}">
+                                    <div class="student-info">
+                                        <div class="student-name">{{ student.name }}</div>
+                                        <div class="student-email">{{ student.email }}</div>
+                                    </div>
+                                </label>
+                            </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+
+                <button type="submit" class="btn btn-primary">
+                    <i class="fas fa-paper-plane"></i>
+                    Send Notice
+                </button>
+            </form>
+        </div>
+
+        <!-- Posted Notices Card -->
+        <div class="card">
+            <div class="card-header">
+                <i class="fas fa-sticky-note"></i>
+                <h3>Posted Notices</h3>
+            </div>
+            
+            <div id="noticesContainer">
+                {% if notices and notices|length > 0 %}
+                <table class="notices-table">
+                    <thead>
+                        <tr>
+                            <th><i class="fas fa-heading"></i> Title</th>
+                            <th><i class="fas fa-align-left"></i> Content</th>
+                            <th><i class="fas fa-users"></i> Recipients</th>
+                            <th><i class="fas fa-calendar"></i> Posted At</th>
+                            <th><i class="fas fa-cog"></i> Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for notice in notices %}
+                        <tr>
+                            <td>{{ notice.title }}</td>
+                            <td>{{ notice.content }}</td>
+                            <td>
+                                {% if notice.recipients|length == students|length %}
+                                    <span class="badge badge-all">All Students</span>
+                                {% else %}
+                                    {% for rec in notice.recipients %}
+                                        <span class="badge">{{ rec.student_id }}</span>
+                                    {% endfor %}
+                                {% endif %}
+                            </td>
+                            <td>{{ notice.created_at.strftime('%Y-%m-%d %H:%M') if notice.created_at else '' }}</td>
+                            <td>
+                                <form method="post" action="/teacher/delete-notice" style="display:inline;">
+                                    <input type="hidden" name="notice_id" value="{{ notice.id }}">
+                                    <button type="submit" class="btn btn-danger" onclick="return confirm('Delete this notice?');">
+                                        <i class="fas fa-trash"></i>
+                                    </button>
+                                </form>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+                {% else %}
+                <div class="empty-state">
+                    <i class="fas fa-sticky-note"></i>
+                    <h4>No notices posted yet</h4>
+                    <p>Create your first notice to get started</p>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function toggleAllStudents(source) {
+            const checkboxes = document.querySelectorAll('.student-checkbox-input');
+            for (const cb of checkboxes) {
+                cb.checked = source.checked;
+            }
+            updateSelectedCount();
+        }
+
+        function updateSelectedCount() {
+            const checkboxes = document.querySelectorAll('.student-checkbox-input');
+            const selectedCount = Array.from(checkboxes).filter(cb => cb.checked).length;
+            const totalCount = checkboxes.length;
+            
+            const counter = document.getElementById('selectedCount');
+            counter.textContent = `${selectedCount} of ${totalCount} selected`;
+            
+            // Update select all checkbox state
+            const selectAllBox = document.getElementById('select-all');
+            if (selectedCount === 0) {
+                selectAllBox.indeterminate = false;
+                selectAllBox.checked = false;
+            } else if (selectedCount === totalCount) {
+                selectAllBox.indeterminate = false;
+                selectAllBox.checked = true;
+            } else {
+                selectAllBox.indeterminate = true;
+            }
+        }
+
+        function deleteNotice(noticeId) {
+            if (confirm('Are you sure you want to delete this notice?')) {
+                // Add your delete logic here
+                console.log('Deleting notice:', noticeId);
+                // You can create a form and submit it, or use AJAX
+            }
+        }
+
+        // Add event listeners to individual checkboxes
+        document.addEventListener('DOMContentLoaded', function() {
+            const checkboxes = document.querySelectorAll('.student-checkbox-input');
+            checkboxes.forEach(checkbox => {
+                checkbox.addEventListener('change', updateSelectedCount);
+            });
+            
+            // Initialize counter
+            updateSelectedCount();
+            
+            // Form submission validation
+            document.getElementById('noticeForm').addEventListener('submit', function(e) {
+                const selectedStudents = document.querySelectorAll('.student-checkbox-input:checked');
+                if (selectedStudents.length === 0) {
+                    e.preventDefault();
+                    alert('Please select at least one student to send the notice to.');
+                }
+            });
+        });
+    </script>
+</body>
+</html>

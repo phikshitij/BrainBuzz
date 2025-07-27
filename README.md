@@ -24,9 +24,9 @@ It features interactive quizzes, descriptive questions, peer review, resource sh
 
 ## 📸 Screenshots
 
-| Dashboard (Teacher) | Dashboard (Student) | AI Chatbot | Resource Sharing | Grading Interface |
-|---------------------|---------------------|------------|------------------|------------------|
-| ![Teacher Dashboard](screenshots/teacher_dashboard.png) | ![Student Dashboard](screenshots/student_dashboard.png) | ![AI Chatbot](screenshots/chatbot.png) | ![Resources](screenshots/resources.png) | ![Grading](screenshots/grading.png) |
+| Dashboard (Teacher) | Dashboard (Student) | Resource Sharing | Grading Interface | Post Notice | Chatbot |
+|---------------------|---------------------|------------------|------------------|-------------|---------|
+| ![Teacher Dashboard](screenshots/teacher_dashboard.png) | ![Student Dashboard](screenshots/student_dashboard.png) | ![Resources](screenshots/resources.png) | ![Grading](screenshots/grading.png) | ![Post Notice](screenshots/Postnotice.png) | ![Chatbot](screenshots/chatbot.png) |
 
 
 ---
